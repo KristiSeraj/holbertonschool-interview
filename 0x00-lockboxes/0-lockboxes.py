@@ -4,7 +4,8 @@
 
 def canUnlockAll(boxes):
     """Method that determines if all the boxes can be opened"""
-    new_list = [0]
+    new_list = []
+    new_list.append(boxes[0][0])
     ls = []
 
     for i in range(len(boxes)):

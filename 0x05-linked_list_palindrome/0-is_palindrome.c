@@ -1,23 +1,22 @@
 #include "lists.h"
-int pali(listint_t *start, listint_t *end)
+/**
+ * reverse - function that reverses linked list
+ * @head: pointer
+ * Return: prev node
+ */
+listint_t *reverse(listint_t *head)
 {
-	int count;
-	int j;
+	listint_t *prev = NULL;
+	listint_t *temp = NULL;
 
-	if (end == NULL)
-		return (0);
-	count = pali(start, end->next);
-	if (count == -1)
-		return (-1);
-	j = count;
-	while (j != 0)
+	while (head)
 	{
-		start = start->next;
-		j--;
+		temp = head->next;
+		head->next = prev;
+		prev = head;
+		head = temp;
 	}
-	if (start->n != end->n)
-		return (-1);
-	return (count + 1);
+	return (prev);
 }
 /**
  * is_palindrome - function that checks if a singly linked list is a palindrome
@@ -26,12 +25,23 @@ int pali(listint_t *start, listint_t *end)
  */
 int is_palindrome(listint_t **head)
 {
-	int ret;
+	listint_t *slow, *fast;
 
-	if (*head == NULL)
-		return (1);
-	ret = pali(*head, *head);
-	if (ret == -1)
-		return (0);
+	slow = *head;
+	fast = *head;
+
+	while (fast && fast->next)
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	slow = reverse(slow);
+	while (slow)
+	{
+		if ((*head)->n != slow->n)
+			return (0);
+		*head = (*head)->next;
+		slow = slow->next;
+	}
 	return (1);
 }

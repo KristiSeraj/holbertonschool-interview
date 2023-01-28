@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Stats module"""
 import sys
 import re
 from collections import Counter

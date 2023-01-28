@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Stats module"""
+"""Stats module used for log parsing"""
 import sys
 import re
 from collections import Counter

@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
-Stats module used for log parsing and printing the output
-"""
+
+""" script that reads stdin line by line and computes metrics """
 
 import sys
 import re

@@ -1,33 +1,46 @@
 #!/usr/bin/python3
 
-"""
-Stats module used for log parsing and printing the output
-"""
+""" script that reads stdin line by line and computes metrics """
 
 import sys
-import re
-from collections import Counter
 
-total_size = 0
-status_codes = Counter()
 
-pattern = re.compile(r"(\d+\.\d+\.\d+\.\d+) - \[.+\] \"GET /projects/\d+ HTTP/1\.1\" (\d+) (\d+)")
+def printsts(dic, size):
+    """ Prints information """
+    print("File size: {:d}".format(size))
+    for i in sorted(dic.keys()):
+        if dic[i] != 0:
+            print("{}: {:d}".format(i, dic[i]))
+
+
+sts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+       "404": 0, "405": 0, "500": 0}
+
+count = 0
+size = 0
 
 try:
-    for i, line in enumerate(sys.stdin):
-        match = pattern.match(line)
-        if not match:  # skipping invalid lines
-            continue
-        _, status_code, file_size = match.groups()
-        total_size += int(file_size)
-        status_codes[status_code] += 1
+    for line in sys.stdin:
+        if count != 0 and count % 10 == 0:
+            printsts(sts, size)
 
-        if (i + 1) % 10 == 0:
-            print("File size:", total_size)
-            for code in sorted(status_codes.keys()):
-                print(f"{code}: {status_codes[code]}")
+        stlist = line.split()
+        count += 1
+
+        try:
+            size += int(stlist[-1])
+        except:
+            pass
+
+        try:
+            if stlist[-2] in sts:
+                sts[stlist[-2]] += 1
+        except:
+            pass
+    printsts(sts, size)
+
 
 except KeyboardInterrupt:
-    print("File size:", total_size)
-    for code in sorted(status_codes.keys()):
-        print(f"{code}: {status_codes[code]}")
+    printsts(sts, size)
+    raise
+

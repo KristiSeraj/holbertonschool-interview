@@ -1,57 +1,48 @@
 #!/usr/bin/python3
-
 """
-Stats module used for log parsing and printing the output
-
-This module takes the logs as input and parses the logs to get the total size
-of the files and the count of different status codes.
-It uses a regular expression to match the lines of the log and
-extract the required information. The logs are read from standard input.
-The module outputs the total size and the count of each status
-code every 10 lines. The output can be stopped by pressing KeyboardInterrupt.
+Task - Script that reads stdin line by line and computes metrics
 """
 
 import sys
-import re
-from collections import Counter
 
 
-def func():
-    """
-    This function reads the log lines from the standard input, matches each
-    line with a regular expression pattern to extract
-    the required information and updates the total size and the count of each
-    status code. It prints the current total size and
-    the count of each status code every 10 lines.
-    """
-    total_size = 0
-    status_codes = Counter()
+if __name__ == "__main__":
+    st_code = {"200": 0,
+               "301": 0,
+               "400": 0,
+               "401": 0,
+               "403": 0,
+               "404": 0,
+               "405": 0,
+               "500": 0}
+    count = 1
+    file_size = 0
 
-    # Compile the regular expression pattern to match the log lines
-    pattern = re.compile(r"(\d+\.\d+\.\d+\.\d+) - \[.+\] \"GET /projects/\d+ HTTP/1\.1\" (\d+) (\d+)")
+    def parse_line(line):
+        """ Read, parse and grab data"""
+        try:
+            parsed_line = line.split()
+            status_code = parsed_line[-2]
+            if status_code in st_code.keys():
+                st_code[status_code] += 1
+            return int(parsed_line[-1])
+        except Exception:
+            return 0
+
+    def print_stats():
+        """print stats in ascending order"""
+        print("File size: {}".format(file_size))
+        for key in sorted(st_code.keys()):
+            if st_code[key]:
+                print("{}: {}".format(key, st_code[key]))
 
     try:
-        # Read the log lines from standard input
-        for i, line in enumerate(sys.stdin):
-            match = pattern.match(line)
-            if not match:  # skipping invalid lines
-                continue
-            _, status_code, file_size = match.groups()
-            total_size += int(file_size)
-            status_codes[status_code] += 1
-
-            if (i + 1) % 10 == 0:
-                # Print the total size
-                # Count of each status code every 10 lines
-                print("File size:", total_size)
-                for code in sorted(status_codes.keys()):
-                    print(f"{code}: {status_codes[code]}")
-
+        for line in sys.stdin:
+            file_size += parse_line(line)
+            if count % 10 == 0:
+                print_stats()
+            count += 1
     except KeyboardInterrupt:
-        # Print the final total size and the count of each status code
-        print("File size:", total_size)
-        for code in sorted(status_codes.keys()):
-            print(f"{code}: {status_codes[code]}")
-
-
-func()
+        print_stats()
+        raise
+    print_stats()

@@ -1,5 +1,10 @@
 #include "menger.h"
-
+/**
+ * checks - checks for indices
+ * @j: column
+ * @i: row
+ * Return: 1 if indices (1, 1) otherwise 0
+ */
 int checks(int i, int j)
 {
 	while (i != 0 && j != 0)
@@ -11,7 +16,10 @@ int checks(int i, int j)
 	}
 	return (1);
 }
-
+/**
+ * menger - draws a 2D level menger
+ * @level: lever of menger sponge to draw
+ */
 void menger(int level)
 {
 	int i, j, limit;

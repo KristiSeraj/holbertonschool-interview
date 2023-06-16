@@ -19,4 +19,8 @@ struct binary_tree_s
 
 typedef struct binary_tree_s binary_tree_t;
 typedef struct binary_tree_s avl_t;
+avl_t *sort_insert(int *array, int min, int max);
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
+avl_t *sort_insert(int *array, int min, int max);
+avl_t *sorted_array_to_avl(int *array, size_t size);
 #endif

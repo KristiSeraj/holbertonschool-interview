@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Make change module"""
-import sys
 
 
 def makeChange(coins, total):

@@ -18,7 +18,7 @@ def makeChange(coins, total):
 
     while total > 0 and i < len(coins):
         if coins[i] <= total:
-            numCoins = min(total // coins[i], coins.count(coins[i]))
+            numCoins = total // coins[i]
             count += numCoins
             total -= numCoins * coins[i]
         i += 1

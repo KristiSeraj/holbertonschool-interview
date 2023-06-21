@@ -10,22 +10,17 @@ def makeChange(coins, total):
     """
     if total <= 0:
         return 0
-    
-    table = [0 for i in range(total + 1)]
 
-    table[0] = 0
+    coins.sort(reverse=True)  # Sort coins in descending order
 
-    for i in range(1, total + 1):
-        table[i] = sys.maxsize
+    count = 0
+    i = 0
 
-    for i in range(1, total + 1):
-        for j in range(len(coins)):
-            if coins[j] <= i:
-                sub_res = table[i - coins[j]]
-                if sub_res != sys.maxsize and sub_res + 1 < table[i]:
-                    table[i] = sub_res + 1
+    while total > 0 and i < len(coins):
+        if coins[i] <= total:
+            numCoins = total // coins[i]
+            count += numCoins
+            total -= numCoins * coins[i]
+        i += 1
 
-    if table[total] == sys.maxsize:
-        return -1
-
-    return table[total]
+    return count if total == 0 else -1

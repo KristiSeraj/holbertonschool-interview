@@ -8,6 +8,9 @@ def makeChange(coins, total):
     Determine the fewest number of coins needed to meet a given amount total
     Returns fewest number of coins needed to meet total
     """
+    if total <= 0:
+        return 0
+    
     table = [0 for i in range(total + 1)]
 
     table[0] = 0

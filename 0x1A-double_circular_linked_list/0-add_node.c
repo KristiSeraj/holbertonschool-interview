@@ -1,5 +1,21 @@
 #include "list.h"
 /**
+ * create_node - create a new node
+ * @str: string
+ * Return: Address of the new node, or NULL on failure
+*/
+List *create_node(char *str) {
+    List *new_node = malloc(sizeof(List));
+    if (new_node == NULL) {
+        return NULL;
+    }
+    new_node->str = strdup(str);
+    new_node->prev = NULL;
+    new_node->next = NULL;
+    return new_node;
+}
+
+/**
  * add_node_end - Add a new node to the end of a double circular linked list
  * @list: list
  * @str: string
